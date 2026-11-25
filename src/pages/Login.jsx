@@ -25,9 +25,15 @@ export default function Login() {
   }
 
   return (
-    <div className="auth-page">
-      <form className="auth-card" onSubmit={handleLogin}>
-        <h2>Welcome Back</h2>
+    <div className="auth-page login-page">
+      <div className="login-sky" aria-hidden="true">
+        <span className="login-sun" />
+        <span className="login-cloud login-cloud-one" />
+        <span className="login-cloud login-cloud-two" />
+        <span className="login-cloud login-cloud-three" />
+      </div>
+      <form className="auth-card login-card" onSubmit={handleLogin}>
+        <h2>Weather App</h2>
         <p>Login to SkySense Weather</p>
 
         <label>Login As</label>
