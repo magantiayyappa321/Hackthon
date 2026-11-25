@@ -1,6 +1,7 @@
 
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { saveAccount } from "../utils/accounts";
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ export default function Signup() {
     e.preventDefault();
 
     const account = { name, email, password, role };
-    localStorage.setItem(`weather_${role}`, JSON.stringify(account));
+    saveAccount(account);
 
     alert("Signup Successful!");
     navigate("/login");
@@ -21,32 +22,39 @@ export default function Signup() {
 
   return (
     <div className="auth-page">
-      <form className="auth-card" onSubmit={handleSignup}>
-        <h2>Create Account</h2>
-        <p>Join SkySense Weather</p>
+      <div className="auth-sky" aria-hidden="true">
+        <span className="auth-sun" />
+        <span className="auth-cloud auth-cloud-one" />
+        <span className="auth-cloud auth-cloud-two" />
+        <span className="auth-cloud auth-cloud-three" />
+      </div>
+      <form className="auth-card signup-card" onSubmit={handleSignup}>
+        <div className="auth-brand"><span className="auth-brand-icon">☀</span> Weather App</div>
+        <h1>Make weather personal</h1>
+        <p className="auth-description">Create your account to save places and stay one step ahead.</p>
 
-        <label>Account Type</label>
-        <select value={role} onChange={(e) => setRole(e.target.value)}>
+        <label htmlFor="signup-role">Account type</label>
+        <select id="signup-role" value={role} onChange={(e) => setRole(e.target.value)}>
           <option value="user">User</option>
           <option value="admin">Admin</option>
         </select>
 
-        <label>Full Name</label>
-        <input value={name} onChange={(e) => setName(e.target.value)}
+        <label htmlFor="signup-name">Full name</label>
+        <input id="signup-name" value={name} onChange={(e) => setName(e.target.value)}
           placeholder="Enter your name" required />
 
-        <label>Email</label>
-        <input type="email" value={email}
+        <label htmlFor="signup-email">Email</label>
+        <input id="signup-email" type="email" value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Enter your email" required />
 
-        <label>Password</label>
-        <input type="password" value={password}
+        <label htmlFor="signup-password">Password</label>
+        <input id="signup-password" type="password" value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Create password" required />
 
-        <button type="submit">Create Account</button>
-        <p>Already have an account? <Link to="/login">Login</Link></p>
+        <button type="submit">Create your account</button>
+        <p className="auth-footer">Already have an account? <Link to="/login">Sign in</Link></p>
       </form>
     </div>
   );

@@ -1,6 +1,7 @@
 
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { getRegisteredAccounts } from "../utils/accounts";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -11,11 +12,14 @@ export default function Login() {
   function handleLogin(e) {
     e.preventDefault();
 
-    const saved = JSON.parse(
-      localStorage.getItem(`weather_${role}`) || "null"
+    const saved = getRegisteredAccounts().find(
+      (account) =>
+        account.role === role &&
+        account.email === email &&
+        account.password === password
     );
 
-    if (!saved || saved.email !== email || saved.password !== password) {
+    if (!saved) {
       alert("Invalid email or password. Please signup first.");
       return;
     }
@@ -26,34 +30,35 @@ export default function Login() {
 
   return (
     <div className="auth-page login-page">
-      <div className="login-sky" aria-hidden="true">
-        <span className="login-sun" />
-        <span className="login-cloud login-cloud-one" />
-        <span className="login-cloud login-cloud-two" />
-        <span className="login-cloud login-cloud-three" />
+      <div className="auth-sky" aria-hidden="true">
+        <span className="auth-sun" />
+        <span className="auth-cloud auth-cloud-one" />
+        <span className="auth-cloud auth-cloud-two" />
+        <span className="auth-cloud auth-cloud-three" />
       </div>
-      <form className="auth-card login-card" onSubmit={handleLogin}>
-        <h2>Weather App</h2>
-        <p>Login to SkySense Weather</p>
+      <form className="auth-card" onSubmit={handleLogin}>
+        <div className="auth-brand"><span className="auth-brand-icon">☀</span> Weather App</div>
+        <h1>Welcome to your forecast</h1>
+        <p className="auth-description">Sign in to see the weather that matters to you.</p>
 
-        <label>Login As</label>
-        <select value={role} onChange={(e) => setRole(e.target.value)}>
+        <label htmlFor="login-role">Login as</label>
+        <select id="login-role" value={role} onChange={(e) => setRole(e.target.value)}>
           <option value="user">User</option>
           <option value="admin">Admin</option>
         </select>
 
-        <label>Email</label>
-        <input type="email" value={email}
+        <label htmlFor="login-email">Email</label>
+        <input id="login-email" type="email" value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Enter your email" required />
 
-        <label>Password</label>
-        <input type="password" value={password}
+        <label htmlFor="login-password">Password</label>
+        <input id="login-password" type="password" value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Enter your password" required />
 
-        <button type="submit">Login</button>
-        <p>New here? <Link to="/signup">Create Account</Link></p>
+        <button type="submit">Sign in</button>
+        <p className="auth-footer">New to Weather App? <Link to="/signup">Create an account</Link></p>
       </form>
     </div>
   );
